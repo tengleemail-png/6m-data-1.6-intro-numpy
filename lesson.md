@@ -11,12 +11,14 @@ Environment: Google Colab or VS Code Jupyter
   - Understand what NumPy is and why it matters
   - Create and inspect basic arrays
   - See how NumPy compares to Python lists on performance
+  - Learn about array indexing, slicing, and broadcasting
+  - Apply universal functions and perform linear algebra operations
 
 ---
 
 ## Part 1: Performance Benchmark
 
-Notebook: **“Part 1: Performance Benchmark”** section and code cell.[file:1]
+Notebook: **"Part 1: Performance Benchmark"** section and code cell.
 
 - Walk through:
   - `import numpy as np`
@@ -27,84 +29,86 @@ Notebook: **“Part 1: Performance Benchmark”** section and code cell.[file:1]
 
 ---
 
-## Part 2: The ndarray
+## Part 2: The ndarray (N-dimensional array)
 
-Notebook: **“Part 2: The ndarray (N-dimensional array)”** and the demo cell creating `arr1` and `arr2`.[file:1]
+Notebook: **"Part 2: The ndarray"** section.
 
-- Concept:
-  - `ndarray` as a container for homogeneous numeric data
-  - Key attributes: `.shape`, `.dtype`, `.ndim`
-- Demo:
-  - Create 1D and 2D arrays from Python lists
-  - Print the array, its shape, dtype, and number of dimensions
-- Short practice:
-  - Learners create their own small 1D and 2D arrays and inspect attributes
-
----
-
-## Data Types and Casting
-
-Notebook: **“Data Types and Casting”** markdown and casting demo cell.[file:1]
-
-- Concept:
-  - NumPy dtypes (`float64`, `int32`, etc.)
-  - Casting with `.astype()`
-  - Truncation when casting float → int
-- Demo:
-  - Create a float array, cast to `int32`, and inspect before/after
-  - Convert string numbers to float using `.astype(float)`
-- Exercise (in-notebook):
-  - **[EXERCISE 1: Creation & Casting]**
-    - 3×4 ones array → cast to `float32`
-    - String array `['1.25', '-9.6', '42']` → cast to `float`
-  - Learners implement solutions in the “Your code here” cell
+- Demonstrate:
+  - Creating arrays from Python sequences
+  - Array attributes: `shape`, `dtype`, `ndim`
+  - Data types and casting using `astype`
+- **[EXERCISE 1: Creation & Casting]**
+  - Create a 3x4 array of all ones using `np.ones()`
+  - Cast this array to `float32`
+  - Create an array of strings representing numbers and cast to `float`
 
 ---
 
-## Guided Practice 1
+## Part 3: Arithmetic & Broadcasting
 
-Notebook: Re-use and extend the existing **Exercise 1** cell.
+Notebook: **"Part 3: Arithmetic & Broadcasting"** section.
 
-- Instructor adds a couple of extra prompts live:
-  - Check `shape` and `dtype` of each created array
-  - Create a new array and try casting to different integer types
-- Learners work individually or in pairs
-- Quick share-out of 1–2 solutions
-
----
-
-## Part 3: Arithmetic & Broadcasting (Intro)
-
-Notebook: **“Part 3: Arithmetic & Broadcasting”** markdown + empty “Your code here” cell.
-
-- Concept (lightweight):
-  - Elementwise arithmetic on arrays (no explicit loops)
-  - Idea of broadcasting with scalars (e.g., `arr * 2`, `arr + 10`)
-- Live coding into the Part 3 code cell:
-  - Create a small 2D array and apply:
-    - Scalar operations (add, multiply)
-    - Elementwise operations between arrays of the same shape
-- Learner activity:
-  - Modify numbers, try a different scalar, and predict results before running
+- Demonstrate:
+  - Element-wise arithmetic operations (addition, multiplication, etc.)
+  - Broadcasting: how scalars and arrays of different shapes work together
+  - Examples: `arr * arr`, `1 / arr`
+- Discussion:
+  - How broadcasting makes code cleaner and more efficient
 
 ---
 
-## Guided Practice 2
+## Part 4: Indexing and Slicing
 
-Notebook: Extend Part 3’s “Your code here” cell with simple tasks.
+Notebook: **"Part 4: Indexing and Slicing"** section.
 
-- Suggested prompts (typed by instructor into the cell / markdown above):
-  - Create a 2D “sales” array and apply percentage increases
-  - Compute a “discounted” array using scalar subtraction
-- Learners code their solutions and compare outputs
+- Demonstrate:
+  - 1D array indexing (similar to Python lists)
+  - 2D array indexing with `[row, col]` syntax
+  - Array slices are views (not copies)
+  - Modifying a slice affects the original array
+- **[EXERCISE 3: Complex Filtering]**
+  - Select all scores where the name is NOT 'Bob'
+  - Select scores for 'Bob' or 'Will' using the `|` operator
+  - Find all scores less than 80 and set them to 0
 
 ---
 
-## Wrap-up and Exit Ticket
+## Part 6: Universal Functions (ufuncs) and Methods
 
-- Recap key skills tied directly to notebook sections:
-  - Performance benchmark (Part 1)
-  - ndarray basics: shape, dtype, ndim (Part 2)
-  - Casting and basic dtypes (Data Types and Casting)
-  - Simple arithmetic and the idea of broadcasting (Part 3, intro)
+Notebook: **"Part 6: Universal Functions (ufuncs) and Methods"** section.
 
+- Demonstrate:
+  - Unary ufuncs: `sqrt`, `exp`
+  - Binary ufuncs: `add`, `maximum`
+  - Statistical methods: `mean`, `sum`, `std`
+  - Computing statistics along axes (axis=0, axis=1)
+- Discussion:
+  - When to use ufuncs vs loops for performance
+
+---
+
+## Part 7: Linear Algebra
+
+Notebook: **"Part 7: Linear Algebra"** section.
+
+- Demonstrate:
+  - Element-wise multiplication with `*` vs matrix multiplication
+  - Matrix multiplication with `.dot()` or `@` operator
+  - Example: multiplying two matrices
+- **[EXERCISE 4: Reshaping & Statistics]**
+  - Create an array of 15 integers using `arange(15)` and reshape it to `(3, 5)`
+  - Calculate the average value of each row
+  - Use `np.unique()` to find distinct elements
+  - Transpose the reshaped array using `.T` and check the new shape
+
+---
+
+## Wrap-up & Next Steps
+
+- Review key takeaways:
+  - NumPy's performance advantages
+  - Creating and manipulating ndarrays
+  - Broadcasting and vectorization
+  - Linear algebra basics
+- Preview next lesson topics
+- Q&A

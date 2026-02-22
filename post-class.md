@@ -55,8 +55,8 @@ Do the following:
 
 ```py
 names = np.array(["Ana", "Ben", "Chen", "Dana", "Eli", "Fatima", "George", "Hui"])
-spend = np.array()      # marketing spend
-revenue = np.array()   # revenue
+spend = np.array([200, 150, 300, 120, 180, 220, 160, 310])      # marketing spend
+revenue = np.array([400, 180, 500, 100, 220, 260, 150, 600])   # revenue
 ```
 
 1. Compute the **ROI** for each person: `roi = revenue / spend`.  
@@ -79,11 +79,11 @@ students = np.array(["S1", "S2", "S3", "S4", "S5"])
 subjects = np.array(["Math", "Stats", "Python"])
 
 scores = np.array([
-    ,
-    ,
-    ,
-    ,
-    
+    [75, 80, 85],
+    [60, 65, 70],
+    [90, 88, 92],
+    [82, 79, 84],
+    [70, 72, 78]
 ])
 ```
 
@@ -169,4 +169,182 @@ If you get stuck:
 - Bring your notebook to the next session or share it in Discord for feedback.
 
 Practicing these patterns now will make later topics (like Pandas and modeling) feel much more natural.
+
+## Solution
+
+## **1: Warm-up: Rebuild the Basics**
+
+### **1\. Array Creation & Inspection**
+
+```
+# 1D array 10 to 19
+arr_1d = np.arange(10, 20)
+
+# 2D array (4, 3) filled with 1.5
+arr_2d = np.full((4, 3), 1.5)
+
+# 3D array of zeros (2, 2, 3)
+arr_3d = np.zeros((2, 2, 3))
+
+for a in [arr_1d, arr_2d, arr_3d]:
+    print(f"Shape: {a.shape}, Dim: {a.ndim}, Dtype: {a.dtype}")
+
+# 2. Convert 2D float to int
+arr_2d_int = arr_2d.astype(int)
+print("\nConverted to int:\n", arr_2d_int)
+```
+
+### **3\. Analyst Reflection: Float vs Int**
+
+* **Use `float`** for metrics requiring precision or where division is involved, such as **stock prices, temperature readings, or conversion rates**.  
+* **Use `int`** for discrete units that cannot be subdivided, such as **website visitor counts, number of units sold, or user IDs**.
+
+## **Part 2: Sales Table Drill**
+
+*Note: Since the original data was empty in the prompt, I have used sample data.*
+
+```
+sales = np.array([
+    [100, 120, 110, 150, 130], # Region A
+    [90, 80, 95, 100, 110],    # Region B
+    [200, 210, 190, 220, 250], # Region C
+    [150, 140, 130, 160, 170]  # Region D
+])
+
+# 1. Select Region B (Row index 1)
+region_b = sales[1, :] 
+# Result: 1D. We selected a single row across all columns.
+
+# 2. Select Q2 to Q4 for all regions (Cols 1 to 4)
+q2_q4 = sales[:, 1:4]
+# Result: 2D. We selected multiple rows and multiple columns.
+
+# 3. Q5 sales for Regions A and D (Row 0 & 3, Col 4)
+a_d_q5 = sales[[0, 3], 4]
+# Result: 1D. We extracted specific scalar values into a new vector.
+
+print("Region B Shape:", region_b.shape)
+print("Q2-Q4 Subarray Shape:", q2_q4.shape)
+print("A & D Q5 Shape:", a_d_q5.shape)
+```
+
+## **Part 3: Boolean Masks**
+
+```
+names = np.array(["Ana", "Ben", "Chen", "Dana", "Eli", "Fatima", "George", "Hui"])
+spend = np.array([100, 250, 50, 300, 150, 400, 120, 210])
+revenue = np.array([250, 400, 120, 800, 200, 900, 150, 500])
+
+# 1. Compute ROI
+roi = revenue / spend
+
+# 2. Mask for ROI >= 2.0
+high_roi_mask = roi >= 2.0
+
+# 3. Use mask
+print("High ROI Customers:", names[high_roi_mask])
+print("Their Spend:", spend[high_roi_mask])
+
+# 4. Combined mask (ROI >= 2.0 AND spend >= 200)
+high_value_mask = (roi >= 2.0) & (spend >= 200)
+print("High Value/High Efficiency:", names[high_value_mask])
+```
+
+**Business Insight:** Customers in the filtered group (ROI \>= 2.0 AND Spend \>= 200\) represent our **Scalable Successes**. These are accounts where we spent a significant amount of money and still saw a high rate of return. We should prioritize these profiles for future budget increases.
+
+## **Part 4: Gradebook Aggregations**
+
+```
+scores = np.array([
+    [85, 90, 78], # S1
+    [70, 80, 85], # S2
+    [95, 92, 98], # S3
+    [60, 65, 60], # S4
+    [88, 85, 90]  # S5
+])
+
+# 1. Student Avg (Row mean)
+student_avg = scores.mean(axis=1)
+
+# 2. Subject Avg (Col mean)
+subject_avg = scores.mean(axis=0)
+
+# 3. Centering (Broadcasting)
+scores_centered = scores - subject_avg
+
+# 4. Compare
+print("Raw Averages:", student_avg)
+print("Centered Averages:", scores_centered.mean(axis=1))
+```
+
+**Why centered scores?** Centering scores provides a fairer comparison because it accounts for the **difficulty of the subject**. If the "Stats" test was much harder than the "Python" test, a student's raw average might look low simply because they took a hard class. Centering shows how they performed relative to the class average for each specific subject.
+
+## **Part 5: Reshape & Flatten**
+
+```
+daily_visits = np.array([
+    120, 130, 125, 140, 150, 160, 170, 155, 145, 135,
+    128, 132, 138, 142, 148, 152, 158, 162, 168, 172,
+    180, 190, 185, 175, 165, 155, 145, 135, 125, 115
+])
+
+# Reshape (6 weeks, 5 days - assuming a 5-day work week)
+weekly_view = daily_visits.reshape(6, 5)
+
+# Total visits per week
+total_per_week = weekly_view.sum(axis=1)
+
+# Average visits per day of the week (Avg of all Day 1s, Day 2s, etc.)
+avg_day_of_week = weekly_view.mean(axis=0)
+
+# Flatten
+original_shape = weekly_view.flatten()
+print("Back to original match?", np.array_equal(daily_visits, original_shape))
+```
+
+**Assumption:** We assume the first 5 elements are Week 1, the next 5 are Week 2, and so on. If the data had weekends included but we reshaped to 5 columns, our "weeks" would drift chronologically.
+
+## **Part 6: Mini-project: Scoring Model**
+
+```
+X = np.array([
+    [10,  3.5,  0],
+    [25,  5.0,  1],
+    [40,  2.0,  0],
+    [15, 10.0,  3],
+    [30,  4.0,  2]
+])
+customers = np.array(["C1", "C2", "C3", "C4", "C5"])
+
+# Weight set 1: Balanced
+w1 = np.array([0.1, 0.5, 1.0])
+scores1 = X @ w1
+
+# Weight set 2: Heavy on Purchases
+w2 = np.array([0.05, 0.1, 5.0])
+scores2 = X @ w2
+
+print("Balanced Rankings:", customers[np.argsort(-scores1)])
+print("Purchase-heavy Rankings:", customers[np.argsort(-scores2)])
+```
+
+**Analysis:**
+
+* **Weighting preference:** `w1` (Balanced) is better for identifying **engaged** users who might be new (high time on site). `w2` (Purchase-heavy) is better for a **loyalty program** where we want to reward historical spend above all else.
+
+## **Part 7: Stretch Idea (A/B Test)**
+
+```
+# Group sizes
+n = 20
+
+# Generate conversions (0 or 1)
+# Using 0.3 probability for A and 0.4 for B
+group_a = np.random.choice([0, 1], size=n, p=[0.7, 0.3])
+group_b = np.random.choice([0, 1], size=n, p=[0.6, 0.4])
+
+print(f"Group A Conv Rate: {group_a.mean():.2%}")
+print(f"Group B Conv Rate: {group_b.mean():.2%}")
+```
+
 
